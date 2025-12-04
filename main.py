@@ -19,7 +19,7 @@ def main():
     torre_negra1 = Torre(COLOR_PIEZA_NEGRA, 0, 0)
     torre_negra2 = Torre(COLOR_PIEZA_NEGRA, 7, 0)
 
-    # Crear torre blanca en h1 (columna 7, fila 7) para probar
+    # Crear torres blancas iniciales
     torre_blanca1 = Torre(COLOR_PIEZA_BLANCA, 0, 7)
     torre_blanca2 = Torre(COLOR_PIEZA_BLANCA, 7, 7)
     
