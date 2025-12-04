@@ -14,3 +14,7 @@ class Pieza:
     @abstractmethod
     def dibujar(self, lienzo, es_seleccionada=False):
         pass
+
+    @abstractmethod
+    def es_movimiento_valido(self, nueva_col, nueva_fila):
+        pass

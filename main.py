@@ -15,14 +15,18 @@ def main():
     crear_tablero(lienzo)
     
     # Crear torre negra en a8 (columna 0, fila 0)
-    torre_negra = Torre(COLOR_PIEZA_NEGRA, 0, 0)
+    torre_negra1 = Torre(COLOR_PIEZA_NEGRA, 0, 0)
+    torre_negra2 = Torre(COLOR_PIEZA_NEGRA, 7, 0)
     
 
     # Crear torre blanca en h1 (columna 7, fila 7) para probar
-    torre_blanca = Torre(COLOR_PIEZA_BLANCA, 7, 7)
+    torre_blanca1 = Torre(COLOR_PIEZA_BLANCA, 0, 7)
+    torre_blanca2 = Torre(COLOR_PIEZA_BLANCA, 7, 7)
     
-    PIEZAS.append(torre_negra)
-    PIEZAS.append(torre_blanca)
+    PIEZAS.append(torre_negra1)
+    PIEZAS.append(torre_negra2)
+    PIEZAS.append(torre_blanca1)
+    PIEZAS.append(torre_blanca2)
     
     lienzo.vincular_click(manejar_click)
 
@@ -70,18 +74,22 @@ def obtener_pieza(col, fila):
             return pieza
     return None
 
+def mapear_pixel_a_logico(x_pixel, y_pixel):
+    """
+    Convierte coordenadas de píxel a coordenadas lógicas del tablero.
+    """
+    col = x_pixel // TAMANO_CELDA
+    fila = y_pixel // TAMANO_CELDA
+    return col, fila
+
 def manejar_click(evento):
     """
     [CONTROLADOR] Gestiona el flujo de movimiento con clicks.
-    Traduce las coordenadas de píxel (evento.x, evento.y) a 
-    coordenadas lógicas (columna, fila).
     """
     global PIEZA_SELECCIONADA, LIENZO_GLOBAL
     
-    # Mapeo de píxeles a coordenadas lógicas (col 0-7, fila 0-7)
-    col_click = evento.x // TAMANO_CELDA
-    fila_click = evento.y // TAMANO_CELDA
-    
+    col_click, fila_click = mapear_pixel_a_logico(evento.x, evento.y)
+
     print(f"Click en la casilla: ({col_click}, {fila_click})")
 
     pieza_en_casilla = obtener_pieza(col_click, fila_click)
@@ -105,9 +113,19 @@ def manejar_click(evento):
         
         elif pieza_en_casilla:
             # Caso 2a: Click en una pieza diferente (captura o re-selección)
-            print("Movimiento de captura (no implementado) o re-selección.")
-            # Por simplicidad, aquí solo re-seleccionamos
-            PIEZA_SELECCIONADA = pieza_en_casilla
+            if PIEZA_SELECCIONADA.color == pieza_en_casilla.color:
+                # Mismo color: Re-seleccionar
+                PIEZA_SELECCIONADA = pieza_en_casilla
+                print(f"Pieza re-seleccionada: {PIEZA_SELECCIONADA.color}")
+            else:
+                # Diferente color: Intentar Captura
+                if PIEZA_SELECCIONADA.es_movimiento_valido(col_click, fila_click):
+                    print(f"¡Captura! {PIEZA_SELECCIONADA.color} captura a {pieza_en_casilla.color}")
+                    PIEZAS.remove(pieza_en_casilla)
+                    PIEZA_SELECCIONADA.mover_a(col_click, fila_click)
+                    PIEZA_SELECCIONADA = None
+                else:
+                    print("Movimiento de captura inválido para la Torre.")
         
         else:
             # Caso 2b: Click en casilla vacía (Movimiento de la Pieza)
