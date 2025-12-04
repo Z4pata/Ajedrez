@@ -11,6 +11,9 @@ class Lienzo:
         # Tkinter usa 'fill' para el relleno y 'outline' para el borde
         self.canvas.create_rectangle(x1, y1, x2, y2, fill=color_relleno, outline=color_borde)
 
+    def crear_circulo(self, x, y, radio, color_relleno, color_borde):
+        self.canvas.create_oval(x - radio, y - radio, x + radio, y + radio, fill=color_relleno, outline=color_borde)
+
     def limpiar(self):
         """Método clave para borrar todos los elementos dibujados en el lienzo."""
         self.canvas.delete("all")
