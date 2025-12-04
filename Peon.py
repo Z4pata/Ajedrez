@@ -50,7 +50,7 @@ class Peon(Pieza):
         self.col = nueva_col
         self.fila = nueva_fila
     
-    def es_movimiento_valido(self, nueva_col, nueva_fila):
+    def es_movimiento_valido(self, nueva_col, nueva_fila, piezas):
         # Movimiento válido para peon: 1 casilla al frente en la misma columna
         if self.color == COLOR_PIEZA_NEGRA:
             # Negras bajan (fila aumenta)
@@ -59,7 +59,7 @@ class Peon(Pieza):
             # Blancas suben (fila disminuye)
             return (self.col == nueva_col) and (nueva_fila == self.fila - 1)
     
-    def es_captura_valida(self, nueva_col, nueva_fila):
+    def es_captura_valida(self, nueva_col, nueva_fila, piezas):
         # Captura válida: 1 casilla en diagonal hacia el frente
         diferencia_col = abs(nueva_col - self.col)
         

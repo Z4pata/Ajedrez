@@ -135,7 +135,7 @@ def manejar_click(evento):
                 print(f"Pieza re-seleccionada: {PIEZA_SELECCIONADA.color}")
             else:
                 # Diferente color: Intentar Captura
-                if PIEZA_SELECCIONADA.es_captura_valida(col_click, fila_click):
+                if PIEZA_SELECCIONADA.es_captura_valida(col_click, fila_click, PIEZAS):
                     print(f"¡Captura! {PIEZA_SELECCIONADA.color} captura a {pieza_en_casilla.color}")
                     PIEZAS.remove(pieza_en_casilla)
                     PIEZA_SELECCIONADA.mover_a(col_click, fila_click)
@@ -150,7 +150,7 @@ def manejar_click(evento):
             # if PIEZA_SELECCIONADA.es_movimiento_valido(col_click, fila_click):
             
             # [Lógica del Negocio] Mover la pieza
-            if not PIEZA_SELECCIONADA.es_movimiento_valido(col_click, fila_click):
+            if not PIEZA_SELECCIONADA.es_movimiento_valido(col_click, fila_click, PIEZAS):
                 print("Movimiento inválido")
                 return
             

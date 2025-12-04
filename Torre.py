@@ -51,12 +51,20 @@ class Torre(Pieza):
         self.col = nueva_col
         self.fila = nueva_fila
     
-    def es_movimiento_valido(self, nueva_col, nueva_fila):
-        # Movimiento válido para torre: misma columna o misma fila
-        return (self.col == nueva_col) or (self.fila == nueva_fila)
+    def es_movimiento_valido(self, nueva_col, nueva_fila, piezas):
+        # 1. Geometría: misma columna o misma fila
+        if not ((self.col == nueva_col) or (self.fila == nueva_fila)):
+            return False
+        
+        # 2. Trayectoria: No saltar piezas (heredado)
+        return self._camino_libre(nueva_col, nueva_fila, piezas)
     
-    def es_captura_valida(self, nueva_col, nueva_fila):
-        # Movimiento válido para torre: misma columna o misma fila
-        return (self.col == nueva_col) or (self.fila == nueva_fila)
+    def es_captura_valida(self, nueva_col, nueva_fila, piezas):
+        # 1. Geometría: misma columna o misma fila
+        if not ((self.col == nueva_col) or (self.fila == nueva_fila)):
+            return False
+        
+        # 2. Trayectoria: No saltar piezas (heredado)
+        return self._camino_libre(nueva_col, nueva_fila, piezas)
     
     
