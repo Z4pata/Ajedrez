@@ -1,5 +1,6 @@
 from Lienzo import Lienzo
 from Torre import Torre
+from Peon import Peon
 from Config import *
 
 PIEZAS = [] 
@@ -14,17 +15,34 @@ def main():
     
     crear_tablero(lienzo)
     
-    # Crear torre negra en a8 (columna 0, fila 0)
+    # Crear torres negras iniciales
     torre_negra1 = Torre(COLOR_PIEZA_NEGRA, 0, 0)
     torre_negra2 = Torre(COLOR_PIEZA_NEGRA, 7, 0)
+
+    # Crear Peones negros iniciales
+    peon_negro1 = Peon(COLOR_PIEZA_NEGRA, 0, 1)
+    peon_negro2 = Peon(COLOR_PIEZA_NEGRA, 1, 1)
+    peon_negro3 = Peon(COLOR_PIEZA_NEGRA, 2, 1)
+    peon_negro4 = Peon(COLOR_PIEZA_NEGRA, 3, 1)
+    peon_negro5 = Peon(COLOR_PIEZA_NEGRA, 4, 1)
+    peon_negro6 = Peon(COLOR_PIEZA_NEGRA, 5, 1)
+    peon_negro7 = Peon(COLOR_PIEZA_NEGRA, 6, 1)
+    peon_negro8 = Peon(COLOR_PIEZA_NEGRA, 7, 1)
     
 
     # Crear torre blanca en h1 (columna 7, fila 7) para probar
     torre_blanca1 = Torre(COLOR_PIEZA_BLANCA, 0, 7)
     torre_blanca2 = Torre(COLOR_PIEZA_BLANCA, 7, 7)
     
+    # Agregar piezas al tablero
+    # NEGRAS
+    agregar_peones(COLOR_PIEZA_NEGRA)
     PIEZAS.append(torre_negra1)
     PIEZAS.append(torre_negra2)
+    
+    
+    # BLANCAS
+    agregar_peones(COLOR_PIEZA_BLANCA)
     PIEZAS.append(torre_blanca1)
     PIEZAS.append(torre_blanca2)
     
@@ -50,6 +68,15 @@ def crear_tablero(lienzo):
             color = COLOR_CASILLA_CLARA if es_blanco else COLOR_CASILLA_OSCURA # Colores clásicos de ajedrez
             
             lienzo.crear_rectangulo(x1, y1, x2, y2, color, "black")
+
+def agregar_peones(color):
+    for i in range(8):
+        if color == COLOR_PIEZA_NEGRA:
+            fila = 1
+        else:
+            fila = 6
+        peon_negro = Peon(color, i, fila)
+        PIEZAS.append(peon_negro)
 
 def dibujar_piezas(lienzo):
     """Dibuja todas las piezas, incluyendo el estado de selección."""
@@ -100,7 +127,7 @@ def manejar_click(evento):
         # ESTADO 1: Seleccionar Pieza
         if pieza_en_casilla:
             PIEZA_SELECCIONADA = pieza_en_casilla
-            print(f"Pieza seleccionada: {PIEZA_SELECCIONADA.color} Torre")
+            print(f"Pieza seleccionada: {PIEZA_SELECCIONADA.color}")
         else:
             print("Casilla vacía. No hay pieza para seleccionar.")
     
@@ -119,13 +146,13 @@ def manejar_click(evento):
                 print(f"Pieza re-seleccionada: {PIEZA_SELECCIONADA.color}")
             else:
                 # Diferente color: Intentar Captura
-                if PIEZA_SELECCIONADA.es_movimiento_valido(col_click, fila_click):
+                if PIEZA_SELECCIONADA.es_captura_valida(col_click, fila_click):
                     print(f"¡Captura! {PIEZA_SELECCIONADA.color} captura a {pieza_en_casilla.color}")
                     PIEZAS.remove(pieza_en_casilla)
                     PIEZA_SELECCIONADA.mover_a(col_click, fila_click)
                     PIEZA_SELECCIONADA = None
                 else:
-                    print("Movimiento de captura inválido para la Torre.")
+                    print("Movimiento de captura inválido.")
         
         else:
             # Caso 2b: Click en casilla vacía (Movimiento de la Pieza)
@@ -135,11 +162,11 @@ def manejar_click(evento):
             
             # [Lógica del Negocio] Mover la pieza
             if not PIEZA_SELECCIONADA.es_movimiento_valido(col_click, fila_click):
-                print("Movimiento inválido para la Torre.")
+                print("Movimiento inválido")
                 return
             
             PIEZA_SELECCIONADA.mover_a(col_click, fila_click)
-            print(f"Movida Torre a: ({col_click}, {fila_click})")
+            print(f"Movida {PIEZA_SELECCIONADA.color} a: ({col_click}, {fila_click})")
             
             # Volver al Estado 1
             PIEZA_SELECCIONADA = None
