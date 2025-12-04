@@ -19,17 +19,6 @@ def main():
     torre_negra1 = Torre(COLOR_PIEZA_NEGRA, 0, 0)
     torre_negra2 = Torre(COLOR_PIEZA_NEGRA, 7, 0)
 
-    # Crear Peones negros iniciales
-    peon_negro1 = Peon(COLOR_PIEZA_NEGRA, 0, 1)
-    peon_negro2 = Peon(COLOR_PIEZA_NEGRA, 1, 1)
-    peon_negro3 = Peon(COLOR_PIEZA_NEGRA, 2, 1)
-    peon_negro4 = Peon(COLOR_PIEZA_NEGRA, 3, 1)
-    peon_negro5 = Peon(COLOR_PIEZA_NEGRA, 4, 1)
-    peon_negro6 = Peon(COLOR_PIEZA_NEGRA, 5, 1)
-    peon_negro7 = Peon(COLOR_PIEZA_NEGRA, 6, 1)
-    peon_negro8 = Peon(COLOR_PIEZA_NEGRA, 7, 1)
-    
-
     # Crear torre blanca en h1 (columna 7, fila 7) para probar
     torre_blanca1 = Torre(COLOR_PIEZA_BLANCA, 0, 7)
     torre_blanca2 = Torre(COLOR_PIEZA_BLANCA, 7, 7)
