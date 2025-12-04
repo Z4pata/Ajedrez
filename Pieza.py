@@ -18,3 +18,7 @@ class Pieza:
     @abstractmethod
     def es_movimiento_valido(self, nueva_col, nueva_fila):
         pass
+
+    @abstractmethod
+    def es_captura_valida(self, nueva_col, nueva_fila):
+        pass

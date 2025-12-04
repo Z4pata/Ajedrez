@@ -55,4 +55,8 @@ class Torre(Pieza):
         # Movimiento válido para torre: misma columna o misma fila
         return (self.col == nueva_col) or (self.fila == nueva_fila)
     
+    def es_captura_valida(self, nueva_col, nueva_fila):
+        # Movimiento válido para torre: misma columna o misma fila
+        return (self.col == nueva_col) or (self.fila == nueva_fila)
+    
     
