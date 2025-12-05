@@ -30,6 +30,8 @@ def main():
     torre_blanca2 = Torre(COLOR_PIEZA_BLANCA, 7, 7)
     alfil_blanca1 = Alfil(COLOR_PIEZA_BLANCA, 2, 7)
     alfil_blanca2 = Alfil(COLOR_PIEZA_BLANCA, 5, 7)
+    caballo_blanca1 = Caballo(COLOR_PIEZA_BLANCA, 1, 7)
+    caballo_blanca2 = Caballo(COLOR_PIEZA_BLANCA, 6, 7)
     
     # Agregar piezas al tablero
     # NEGRAS
@@ -48,6 +50,8 @@ def main():
     PIEZAS.append(torre_blanca2)
     PIEZAS.append(alfil_blanca1)
     PIEZAS.append(alfil_blanca2)
+    PIEZAS.append(caballo_blanca1)
+    PIEZAS.append(caballo_blanca2)
     
     lienzo.vincular_click(manejar_click)
 
