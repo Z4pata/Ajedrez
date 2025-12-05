@@ -2,6 +2,7 @@ from Lienzo import Lienzo
 from Torre import Torre
 from Peon import Peon
 from Alfil import Alfil
+from Caballo import Caballo
 from Config import *
 
 PIEZAS = [] 
@@ -21,6 +22,8 @@ def main():
     torre_negra2 = Torre(COLOR_PIEZA_NEGRA, 7, 0)
     alfil_negra1 = Alfil(COLOR_PIEZA_NEGRA, 2, 0)
     alfil_negra2 = Alfil(COLOR_PIEZA_NEGRA, 5, 0)
+    caballo_negra1 = Caballo(COLOR_PIEZA_NEGRA, 1, 0)
+    caballo_negra2 = Caballo(COLOR_PIEZA_NEGRA, 6, 0)
 
     # Crear torres blancas iniciales
     torre_blanca1 = Torre(COLOR_PIEZA_BLANCA, 0, 7)
@@ -35,6 +38,8 @@ def main():
     PIEZAS.append(torre_negra2)
     PIEZAS.append(alfil_negra1)
     PIEZAS.append(alfil_negra2)
+    PIEZAS.append(caballo_negra1)
+    PIEZAS.append(caballo_negra2)
     
     
     # BLANCAS
