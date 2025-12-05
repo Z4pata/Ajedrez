@@ -23,7 +23,7 @@ class Pieza:
     def es_captura_valida(self, nueva_col, nueva_fila, piezas=None):
         pass
 
-    def _camino_libre(self, nueva_col, nueva_fila, piezas):
+    def camino_libre(self, nueva_col, nueva_fila, piezas):
         """
         Verifica genéricamente si hay piezas en la trayectoria lineal o diagonal
         entre la posición actual y la destino (excluyendo inicio y fin).
@@ -44,14 +44,14 @@ class Pieza:
         
         # Iterar mientras no lleguemos a la casilla destino
         while (curr_col != nueva_col) or (curr_fila != nueva_fila):
-            if self._hay_pieza(curr_col, curr_fila, piezas):
+            if self.hay_pieza(curr_col, curr_fila, piezas):
                 return False
             curr_col += d_col
             curr_fila += d_fila
             
         return True
 
-    def _hay_pieza(self, col, fila, piezas):
+    def hay_pieza(self, col, fila, piezas):
         for p in piezas:
             if p.col == col and p.fila == fila:
                 return True

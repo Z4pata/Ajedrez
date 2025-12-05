@@ -57,7 +57,7 @@ class Torre(Pieza):
             return False
         
         # 2. Trayectoria: No saltar piezas (heredado)
-        return self._camino_libre(nueva_col, nueva_fila, piezas)
+        return self.camino_libre(nueva_col, nueva_fila, piezas)
     
     def es_captura_valida(self, nueva_col, nueva_fila, piezas):
         # 1. Geometría: misma columna o misma fila
@@ -65,6 +65,6 @@ class Torre(Pieza):
             return False
         
         # 2. Trayectoria: No saltar piezas (heredado)
-        return self._camino_libre(nueva_col, nueva_fila, piezas)
+        return self.camino_libre(nueva_col, nueva_fila, piezas)
     
     
