@@ -13,7 +13,7 @@ class Alfil(Pieza):
         margen = 10 
         
         base_x1 = x_pixel + margen
-        base_y1 = y_pixel + margen + 15 
+        base_y1 = y_pixel + margen + 20 
         base_x2 = x_pixel + TAMANO_CELDA - margen
         base_y2 = y_pixel + TAMANO_CELDA - margen
 
@@ -40,20 +40,20 @@ class Alfil(Pieza):
         ancho_base = base_x2 - base_x1
         cuerpo_x1 = base_x1 + (ancho_base * 0.35)
         cuerpo_x2 = base_x2 - (ancho_base * 0.35)
-        cuerpo_y1 = base_y1 - 18 
+        cuerpo_y1 = base_y1 - 15 
         cuerpo_y2 = base_y1
         lienzo.crear_rectangulo(cuerpo_x1, cuerpo_y1, cuerpo_x2, cuerpo_y2, color_relleno, color_borde)
 
         # DIBUJAR CABEZA (Círculo grande)
         centro_x = x_pixel + (TAMANO_CELDA // 2)
         radio = (ancho_base * 0.25) 
-        centro_y = cuerpo_y1 
+        centro_y = cuerpo_y1  # La cabeza sigue estando sobre el cuerpo, pero el cuerpo bajó
         
         lienzo.crear_circulo(centro_x, centro_y, radio, color_relleno, color_borde)
 
         # DIBUJAR DETALLE SUPERIOR (Círculo pequeño)
         radio_detalle = radio * 0.4
-        centro_y_detalle = centro_y - radio 
+        centro_y_detalle = centro_y - radio
         lienzo.crear_circulo(centro_x, centro_y_detalle, radio_detalle, color_relleno, color_borde)
     
     def mover_a(self, nueva_col, nueva_fila):
