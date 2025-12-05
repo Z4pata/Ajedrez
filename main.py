@@ -1,6 +1,7 @@
 from Lienzo import Lienzo
 from Torre import Torre
 from Peon import Peon
+from Alfil import Alfil
 from Config import *
 
 PIEZAS = [] 
@@ -18,22 +19,30 @@ def main():
     # Crear torres negras iniciales
     torre_negra1 = Torre(COLOR_PIEZA_NEGRA, 0, 0)
     torre_negra2 = Torre(COLOR_PIEZA_NEGRA, 7, 0)
+    alfil_negra1 = Alfil(COLOR_PIEZA_NEGRA, 2, 0)
+    alfil_negra2 = Alfil(COLOR_PIEZA_NEGRA, 5, 0)
 
     # Crear torres blancas iniciales
     torre_blanca1 = Torre(COLOR_PIEZA_BLANCA, 0, 7)
     torre_blanca2 = Torre(COLOR_PIEZA_BLANCA, 7, 7)
+    alfil_blanca1 = Alfil(COLOR_PIEZA_BLANCA, 2, 7)
+    alfil_blanca2 = Alfil(COLOR_PIEZA_BLANCA, 5, 7)
     
     # Agregar piezas al tablero
     # NEGRAS
     agregar_peones(COLOR_PIEZA_NEGRA)
     PIEZAS.append(torre_negra1)
     PIEZAS.append(torre_negra2)
+    PIEZAS.append(alfil_negra1)
+    PIEZAS.append(alfil_negra2)
     
     
     # BLANCAS
     agregar_peones(COLOR_PIEZA_BLANCA)
     PIEZAS.append(torre_blanca1)
     PIEZAS.append(torre_blanca2)
+    PIEZAS.append(alfil_blanca1)
+    PIEZAS.append(alfil_blanca2)
     
     lienzo.vincular_click(manejar_click)
 
