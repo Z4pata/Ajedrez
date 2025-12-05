@@ -12,6 +12,10 @@ class Lienzo:
 
     def crear_circulo(self, x, y, radio, color_relleno, color_borde):
         self.canvas.create_oval(x - radio, y - radio, x + radio, y + radio, fill=color_relleno, outline=color_borde)
+    
+    def crear_poligono(self, puntos, color_relleno, color_borde):
+        # puntos debe ser una lista plana [x1, y1, x2, y2, ...]
+        self.canvas.create_polygon(puntos, fill=color_relleno, outline=color_borde)
 
     def limpiar(self):
         """Método clave para borrar todos los elementos dibujados en el lienzo."""
