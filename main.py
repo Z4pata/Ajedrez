@@ -127,6 +127,107 @@ def mapear_pixel_a_logico(x_pixel, y_pixel):
     fila = y_pixel // TAMANO_CELDA
     return col, fila
 
+def obtener_rey(color):
+    """Devuelve la instancia del Rey del color especificado."""
+    for pieza in PIEZAS:
+        if isinstance(pieza, Rey) and pieza.color == color:
+            return pieza
+    return None
+
+def esta_en_jaque(color, piezas_tablero):
+    """
+    Verifica si el Rey del color dado está siendo atacado por alguna pieza enemiga.
+    """
+    rey = obtener_rey(color)
+    if not rey: return False
+    
+    color_enemigo = COLOR_PIEZA_BLANCA if color == COLOR_PIEZA_NEGRA else COLOR_PIEZA_NEGRA
+    
+    for pieza in piezas_tablero:
+        if pieza.color == color_enemigo:
+            # Verificar si esta pieza enemiga puede capturar al rey
+            # Nota: Usamos piezas_tablero para la validación de trayectoria
+            if pieza.es_captura_valida(rey.col, rey.fila, piezas_tablero):
+                return True
+    return False
+
+def es_jaque_mate(color, piezas_tablero):
+    """
+    Determina si el color está en Jaque Mate.
+    Condición: Está en Jaque Y no tiene movimientos legales para salir de él.
+    """
+    if not esta_en_jaque(color, piezas_tablero):
+        return False
+    
+    # Si está en jaque, verificamos si tiene alguna salvación
+    if tiene_movimientos_validos(color, piezas_tablero):
+        return False
+    
+    return True
+
+def tiene_movimientos_validos(color, piezas_tablero):
+    """
+    Verifica si existe AL MENOS UN movimiento legal para cualquier pieza del color dado.
+    Fuerza bruta optimizada: Probamos mover cada pieza a cada casilla.
+    """
+    # Filtramos las piezas del color
+    piezas_propias = [p for p in piezas_tablero if p.color == color]
+    
+    for pieza in piezas_propias:
+        # Probamos mover a todas las casillas del tablero (0..7, 0..7)
+        for fila in range(8):
+            for col in range(8):
+                # 1. ¿Es un movimiento geométricamente válido?
+                # Nota: Para simplificar la verificación de captura vs movimiento,
+                # podemos chequear ambos. Si hay pieza enemiga es captura, si no es movimiento.
+                
+                es_valido = False
+                pieza_destino = obtener_pieza(col, fila) # Ojo: esto usa PIEZAS global, cuidado
+                
+                # Casilla vacía -> Movimiento
+                if pieza_destino is None:
+                    if pieza.es_movimiento_valido(col, fila, piezas_tablero):
+                        es_valido = True
+                # Casilla enemiga -> Captura
+                elif pieza_destino.color != color:
+                    if pieza.es_captura_valida(col, fila, piezas_tablero):
+                        es_valido = True
+                
+                if es_valido:
+                    # 2. ¿Evita el jaque?
+                    if not movimiento_deja_en_jaque(pieza, col, fila, pieza_destino):
+                        return True # Encontramos una salvación!
+                        
+    return False # No se encontró ningún movimiento salvador
+
+def movimiento_deja_en_jaque(pieza_a_mover, col_destino, fila_destino, pieza_capturada=None):
+    """
+    Simula un movimiento para ver si deja al propio Rey en jaque.
+    Retorna True si el movimiento es ILEGAL (deja en jaque).
+    """
+    # 1. Guardar estado original
+    col_origen = pieza_a_mover.col
+    fila_origen = pieza_a_mover.fila
+    
+    # 2. Simular movimiento
+    pieza_a_mover.col = col_destino
+    pieza_a_mover.fila = fila_destino
+    
+    if pieza_capturada:
+        PIEZAS.remove(pieza_capturada)
+        
+    # 3. Verificar Jaque
+    en_jaque = esta_en_jaque(pieza_a_mover.color, PIEZAS)
+    
+    # 4. Restaurar estado
+    pieza_a_mover.col = col_origen
+    pieza_a_mover.fila = fila_origen
+    
+    if pieza_capturada:
+        PIEZAS.append(pieza_capturada)
+        
+    return en_jaque
+
 def manejar_click(evento):
     """
     [CONTROLADOR] Gestiona el flujo de movimiento con clicks.
@@ -165,9 +266,26 @@ def manejar_click(evento):
             else:
                 # Diferente color: Intentar Captura
                 if PIEZA_SELECCIONADA.es_captura_valida(col_click, fila_click, PIEZAS):
+                    # VALIDAR SI DEJA EN JAQUE AL PROPIO REY
+                    if movimiento_deja_en_jaque(PIEZA_SELECCIONADA, col_click, fila_click, pieza_en_casilla):
+                        print("¡Movimiento ilegal! Dejaría al rey en jaque.")
+                        return
+                    
+                    if isinstance(pieza_en_casilla, Rey):
+                        print("¡Movimiento ilegal! No puedes capturar al rey.")
+                        return
+
                     print(f"¡Captura! {PIEZA_SELECCIONADA.color} captura a {pieza_en_casilla.color}")
                     PIEZAS.remove(pieza_en_casilla)
                     PIEZA_SELECCIONADA.mover_a(col_click, fila_click)
+                    
+                    # Verificar si pusimos en jaque al enemigo
+                    if esta_en_jaque(pieza_en_casilla.color, PIEZAS):
+                        if es_jaque_mate(pieza_en_casilla.color, PIEZAS):
+                            print(f"¡JAQUE MATE! Ganan {PIEZA_SELECCIONADA.color}")
+                        else:
+                            print("¡JAQUE!")
+
                     PIEZA_SELECCIONADA = None
                 else:
                     print("Movimiento de captura inválido.")
@@ -175,17 +293,27 @@ def manejar_click(evento):
         else:
             # Caso 2b: Click en casilla vacía (Movimiento de la Pieza)
             
-            # TODO: Aquí iría la lógica avanzada de validación de Ajedrez
-            # if PIEZA_SELECCIONADA.es_movimiento_valido(col_click, fila_click):
-            
             # [Lógica del Negocio] Mover la pieza
             if not PIEZA_SELECCIONADA.es_movimiento_valido(col_click, fila_click, PIEZAS):
                 print("Movimiento inválido")
                 return
             
+            # VALIDAR SI DEJA EN JAQUE AL PROPIO REY
+            if movimiento_deja_en_jaque(PIEZA_SELECCIONADA, col_click, fila_click):
+                print("¡Movimiento ilegal! Dejaría al rey en jaque.")
+                return
+            
             PIEZA_SELECCIONADA.mover_a(col_click, fila_click)
             print(f"Movida {PIEZA_SELECCIONADA.color} a: ({col_click}, {fila_click})")
             
+            # Verificar si pusimos en jaque al enemigo
+            color_enemigo = COLOR_PIEZA_BLANCA if PIEZA_SELECCIONADA.color == COLOR_PIEZA_NEGRA else COLOR_PIEZA_NEGRA
+            if esta_en_jaque(color_enemigo, PIEZAS):
+                if es_jaque_mate(color_enemigo, PIEZAS):
+                    print(f"¡JAQUE MATE! Ganan {PIEZA_SELECCIONADA.color}")
+                else:
+                    print("¡JAQUE!")
+
             # Volver al Estado 1
             PIEZA_SELECCIONADA = None
 
