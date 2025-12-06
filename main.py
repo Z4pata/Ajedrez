@@ -4,6 +4,7 @@ from Peon import Peon
 from Alfil import Alfil
 from Caballo import Caballo
 from Reina import Reina
+from Rey import Rey
 from Config import *
 
 PIEZAS = [] 
@@ -26,6 +27,7 @@ def main():
     caballo_negra1 = Caballo(COLOR_PIEZA_NEGRA, 1, 0)
     caballo_negra2 = Caballo(COLOR_PIEZA_NEGRA, 6, 0)
     reina_negra = Reina(COLOR_PIEZA_NEGRA, 3, 0)
+    rey_negra = Rey(COLOR_PIEZA_NEGRA, 4, 0)
     
     # Crear torres blancas iniciales
     torre_blanca1 = Torre(COLOR_PIEZA_BLANCA, 0, 7)
@@ -35,6 +37,7 @@ def main():
     caballo_blanca1 = Caballo(COLOR_PIEZA_BLANCA, 1, 7)
     caballo_blanca2 = Caballo(COLOR_PIEZA_BLANCA, 6, 7)
     reina_blanca = Reina(COLOR_PIEZA_BLANCA, 3, 7)
+    rey_blanca = Rey(COLOR_PIEZA_BLANCA, 4, 7)
     
     # Agregar piezas al tablero
     # NEGRAS
@@ -46,6 +49,7 @@ def main():
     PIEZAS.append(caballo_negra1)
     PIEZAS.append(caballo_negra2)
     PIEZAS.append(reina_negra)
+    PIEZAS.append(rey_negra)
     
     
     # BLANCAS
@@ -57,6 +61,8 @@ def main():
     PIEZAS.append(caballo_blanca1)
     PIEZAS.append(caballo_blanca2)
     PIEZAS.append(reina_blanca)
+    PIEZAS.append(rey_blanca)    
+
     
     lienzo.vincular_click(manejar_click)
 
