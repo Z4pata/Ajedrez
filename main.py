@@ -10,9 +10,11 @@ from Config import *
 PIEZAS = [] 
 PIEZA_SELECCIONADA = None
 LIENZO_GLOBAL = None
+TURNO = COLOR_PIEZA_BLANCA
 
 def main():
     global LIENZO_GLOBAL
+    global TURNO
     lienzo = Lienzo(CONSTANTES["ANCHO_TABLERO"], CONSTANTES["ALTO_TABLERO"])
 
     LIENZO_GLOBAL = lienzo
@@ -86,6 +88,7 @@ def crear_tablero(lienzo):
             color = COLOR_CASILLA_CLARA if es_blanco else COLOR_CASILLA_OSCURA # Colores clásicos de ajedrez
             
             lienzo.crear_rectangulo(x1, y1, x2, y2, color, "black")
+    
 
 def agregar_peones(color):
     for i in range(8):
@@ -103,6 +106,19 @@ def dibujar_piezas(lienzo):
         es_seleccionada = (pieza == PIEZA_SELECCIONADA)
         pieza.dibujar(lienzo, es_seleccionada)
 
+def dibujar_turno(lienzo):
+    """Dibuja un letrero indicando de quién es el turno."""
+    turno = "BLANCO" if TURNO == COLOR_PIEZA_BLANCA else "NEGRO"
+    texto = f"Turno: {turno}"
+    color_texto = "black"
+    
+    # Dibujar en la zona inferior (y=425, centrado en x=200)
+    # Usamos ANCHO_TABLERO / 2 para centrar horizontalmente
+    x = CONSTANTES["ANCHO_TABLERO"] // 2
+    y = CONSTANTES["ALTO_TABLERO"] - 25
+    
+    lienzo.crear_texto(x, y, texto, color_texto, fuente=("Arial", 16, "bold"))
+
 def actualizar_lienzo(lienzo):
     """
     Función de control que gestiona la actualización de la interfaz gráfica.
@@ -111,6 +127,7 @@ def actualizar_lienzo(lienzo):
     lienzo.limpiar()
     crear_tablero(lienzo)
     dibujar_piezas(lienzo)
+    dibujar_turno(lienzo)
 
 def obtener_pieza(col, fila):
     """Devuelve la pieza en una coordenada lógica dada, o None."""
@@ -232,7 +249,7 @@ def manejar_click(evento):
     """
     [CONTROLADOR] Gestiona el flujo de movimiento con clicks.
     """
-    global PIEZA_SELECCIONADA, LIENZO_GLOBAL
+    global PIEZA_SELECCIONADA, TURNO, LIENZO_GLOBAL
     
     col_click, fila_click = mapear_pixel_a_logico(evento.x, evento.y)
 
@@ -271,6 +288,10 @@ def manejar_click(evento):
                         print("¡Movimiento ilegal! Dejaría al rey en jaque.")
                         return
                     
+                    if TURNO != PIEZA_SELECCIONADA.color:
+                        print("¡Movimiento ilegal! No es tu turno.")
+                        return
+                    
                     if isinstance(pieza_en_casilla, Rey):
                         print("¡Movimiento ilegal! No puedes capturar al rey.")
                         return
@@ -286,7 +307,11 @@ def manejar_click(evento):
                         else:
                             print("¡JAQUE!")
 
+                    # Limpiar la selección
                     PIEZA_SELECCIONADA = None
+
+                    # Cambiar de turno
+                    TURNO = COLOR_PIEZA_BLANCA if TURNO == COLOR_PIEZA_NEGRA else COLOR_PIEZA_NEGRA
                 else:
                     print("Movimiento de captura inválido.")
         
@@ -296,6 +321,10 @@ def manejar_click(evento):
             # [Lógica del Negocio] Mover la pieza
             if not PIEZA_SELECCIONADA.es_movimiento_valido(col_click, fila_click, PIEZAS):
                 print("Movimiento inválido")
+                return
+            
+            if TURNO != PIEZA_SELECCIONADA.color:
+                print("¡Movimiento ilegal! No es tu turno.")
                 return
             
             # VALIDAR SI DEJA EN JAQUE AL PROPIO REY
@@ -314,10 +343,13 @@ def manejar_click(evento):
                 else:
                     print("¡JAQUE!")
 
-            # Volver al Estado 1
+            # Limpiar la selección
             PIEZA_SELECCIONADA = None
 
-    # [Lógica de Presentación] Actualizar la GUI después de cada acción
+            # Cambiar de turno
+            TURNO = COLOR_PIEZA_BLANCA if TURNO == COLOR_PIEZA_NEGRA else COLOR_PIEZA_NEGRA
+
+    # Actualizar el tablero
     actualizar_lienzo(LIENZO_GLOBAL)
 
 

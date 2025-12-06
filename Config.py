@@ -1,6 +1,6 @@
 CONSTANTES = {
     "ANCHO_TABLERO": 400,
-    "ALTO_TABLERO": 400,
+    "ALTO_TABLERO": 450, # 50px extra para el letrero de turno
     "DIMENSION": 8  # 8x8 tablero
 }
 

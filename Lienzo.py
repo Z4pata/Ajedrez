@@ -17,6 +17,9 @@ class Lienzo:
         # puntos debe ser una lista plana [x1, y1, x2, y2, ...]
         self.canvas.create_polygon(puntos, fill=color_relleno, outline=color_borde)
 
+    def crear_texto(self, x, y, texto, color, fuente=("Arial", 12)):
+        self.canvas.create_text(x, y, text=texto, fill=color, font=fuente)
+
     def limpiar(self):
         """Método clave para borrar todos los elementos dibujados en el lienzo."""
         self.canvas.delete("all")
