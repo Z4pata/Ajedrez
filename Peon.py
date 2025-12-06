@@ -54,9 +54,13 @@ class Peon(Pieza):
         # Movimiento válido para peon: 1 casilla al frente en la misma columna
         if self.color == COLOR_PIEZA_NEGRA:
             # Negras bajan (fila aumenta)
+            if self.fila == 1: # Doble movimiento inicial
+                return (self.col == nueva_col) and (nueva_fila == self.fila + 1 or nueva_fila == self.fila + 2)
             return (self.col == nueva_col) and (nueva_fila == self.fila + 1)
         else:
             # Blancas suben (fila disminuye)
+            if self.fila == 6: # Doble movimiento inicial
+                return (self.col == nueva_col) and (nueva_fila == self.fila - 1 or nueva_fila == self.fila - 2)
             return (self.col == nueva_col) and (nueva_fila == self.fila - 1)
     
     def es_captura_valida(self, nueva_col, nueva_fila, piezas):
