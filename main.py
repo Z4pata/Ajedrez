@@ -301,7 +301,10 @@ def manejar_click(evento):
                     # Verificar si pusimos en jaque al enemigo
                     if esta_en_jaque(pieza_en_casilla.color, PIEZAS):
                         if es_jaque_mate(pieza_en_casilla.color, PIEZAS):
-                            print(f"¡JAQUE MATE! Ganan {PIEZA_SELECCIONADA.color}")
+                            mensaje = f"¡JAQUE MATE! Ganan {PIEZA_SELECCIONADA.color}"
+                            print(mensaje)
+                            actualizar_lienzo(LIENZO_GLOBAL)
+                            LIENZO_GLOBAL.mostrar_aviso("Fin del Juego", mensaje)
                         else:
                             print("¡JAQUE!")
 
@@ -340,7 +343,11 @@ def manejar_click(evento):
             color_enemigo = COLOR_PIEZA_BLANCA if PIEZA_SELECCIONADA.color == COLOR_PIEZA_NEGRA else COLOR_PIEZA_NEGRA
             if esta_en_jaque(color_enemigo, PIEZAS):
                 if es_jaque_mate(color_enemigo, PIEZAS):
-                    print(f"¡JAQUE MATE! Ganan {PIEZA_SELECCIONADA.color}")
+                    mensaje = f"¡JAQUE MATE! Ganan {PIEZA_SELECCIONADA.color}"
+                    print(mensaje)
+                    # Actualizar GUI antes del aviso para ver el mate
+                    actualizar_lienzo(LIENZO_GLOBAL)
+                    LIENZO_GLOBAL.mostrar_aviso("Fin del Juego", mensaje)
                 else:
                     print("¡JAQUE!")
 

@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 
 class Lienzo:
     def __init__(self, ancho, alto):
@@ -7,6 +8,10 @@ class Lienzo:
         self.canvas = tk.Canvas(self.root, width=ancho, height=alto, bg="white")
         self.canvas.pack()
     
+    def mostrar_aviso(self, titulo, mensaje):
+        """Muestra una ventana emergente de información."""
+        messagebox.showinfo(titulo, mensaje)
+
     def crear_rectangulo(self, x1, y1, x2, y2, color_relleno, color_borde):      
         self.canvas.create_rectangle(x1, y1, x2, y2, fill=color_relleno, outline=color_borde)
 
