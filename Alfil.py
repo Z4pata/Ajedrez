@@ -47,7 +47,7 @@ class Alfil(Pieza):
         # DIBUJAR CABEZA (Círculo grande)
         centro_x = x_pixel + (TAMANO_CELDA // 2)
         radio = (ancho_base * 0.25) 
-        centro_y = cuerpo_y1  # La cabeza sigue estando sobre el cuerpo, pero el cuerpo bajó
+        centro_y = cuerpo_y1
         
         lienzo.crear_circulo(centro_x, centro_y, radio, color_relleno, color_borde)
 
@@ -61,14 +61,14 @@ class Alfil(Pieza):
         self.fila = nueva_fila
     
     def es_movimiento_valido(self, nueva_col, nueva_fila, piezas):
-        # 1. Geometría: Diagonal
+        # Diagonal
         diff_col = abs(nueva_col - self.col)
         diff_fila = abs(nueva_fila - self.fila)
         
         if diff_col != diff_fila:
             return False
             
-        # 2. Trayectoria: No saltar piezas
+        #  No saltar piezas
         return self.camino_libre(nueva_col, nueva_fila, piezas)
     
     

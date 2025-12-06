@@ -112,7 +112,7 @@ def dibujar_turno(lienzo):
     texto = f"Turno: {turno}"
     color_texto = "black"
     
-    # Dibujar en la zona inferior (y=425, centrado en x=200)
+    # Dibujar en la zona inferior
     # Usamos ANCHO_TABLERO / 2 para centrar horizontalmente
     x = CONSTANTES["ANCHO_TABLERO"] // 2
     y = CONSTANTES["ALTO_TABLERO"] - 25
@@ -122,7 +122,6 @@ def dibujar_turno(lienzo):
 def actualizar_lienzo(lienzo):
     """
     Función de control que gestiona la actualización de la interfaz gráfica.
-    Patrón: Clear and Redraw.
     """
     lienzo.limpiar()
     crear_tablero(lienzo)
@@ -163,7 +162,6 @@ def esta_en_jaque(color, piezas_tablero):
     for pieza in piezas_tablero:
         if pieza.color == color_enemigo:
             # Verificar si esta pieza enemiga puede capturar al rey
-            # Nota: Usamos piezas_tablero para la validación de trayectoria
             if pieza.es_captura_valida(rey.col, rey.fila, piezas_tablero):
                 return True
     return False
@@ -318,11 +316,12 @@ def manejar_click(evento):
         else:
             # Caso 2b: Click en casilla vacía (Movimiento de la Pieza)
             
-            # [Lógica del Negocio] Mover la pieza
+            # Validar movimiento
             if not PIEZA_SELECCIONADA.es_movimiento_valido(col_click, fila_click, PIEZAS):
                 print("Movimiento inválido")
                 return
             
+            # Validar turno
             if TURNO != PIEZA_SELECCIONADA.color:
                 print("¡Movimiento ilegal! No es tu turno.")
                 return
@@ -332,6 +331,8 @@ def manejar_click(evento):
                 print("¡Movimiento ilegal! Dejaría al rey en jaque.")
                 return
             
+
+            # Mover la pieza
             PIEZA_SELECCIONADA.mover_a(col_click, fila_click)
             print(f"Movida {PIEZA_SELECCIONADA.color} a: ({col_click}, {fila_click})")
             

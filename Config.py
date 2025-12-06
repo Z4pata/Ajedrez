@@ -8,7 +8,6 @@ CONSTANTES = {
 TAMANO_CELDA = CONSTANTES["ANCHO_TABLERO"] // CONSTANTES["DIMENSION"]
 
 # Colores (Paleta)
-# Centralizar los colores permite cambiar el "tema" del juego fácilmente.
 COLOR_CASILLA_CLARA = "#F0D9B5"
 COLOR_CASILLA_OSCURA = "#B58863"
 COLOR_PIEZA_NEGRA = "black"

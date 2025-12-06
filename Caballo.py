@@ -58,7 +58,6 @@ class Caballo(Pieza):
             x_pixel + 15, y_pixel + 30,   # Base izquierda arriba
         ]
         
-        # Dibujamos el polígono del cuerpo
         lienzo.crear_poligono(puntos, color_relleno, color_borde)
         
         # OJO
