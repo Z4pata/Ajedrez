@@ -25,6 +25,11 @@ class Lienzo:
     def crear_texto(self, x, y, texto, color, fuente=("Arial", 12)):
         self.canvas.create_text(x, y, text=texto, fill=color, font=fuente)
 
+    def crear_boton(self, texto, comando):
+        # Colocamos el botón flotando sobre la ventana usando place
+        boton = tk.Button(self.root, text=texto, command=comando, bg="black", fg="white")
+        boton.place(x=350, y=425, anchor="center")
+
     def limpiar(self):
         """Método clave para borrar todos los elementos dibujados en el lienzo."""
         self.canvas.delete("all")

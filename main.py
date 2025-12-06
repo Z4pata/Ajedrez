@@ -13,13 +13,31 @@ LIENZO_GLOBAL = None
 TURNO = COLOR_PIEZA_BLANCA
 
 def main():
-    global LIENZO_GLOBAL
-    global TURNO
+    global LIENZO_GLOBAL, TURNO
     lienzo = Lienzo(CONSTANTES["ANCHO_TABLERO"], CONSTANTES["ALTO_TABLERO"])
 
     LIENZO_GLOBAL = lienzo
     
-    crear_tablero(lienzo)
+    iniciar_juego()
+    
+    lienzo.vincular_click(manejar_click)
+    
+    # Crear botón de reinicio
+    def accion_reiniciar():
+        iniciar_juego()
+        
+    lienzo.crear_boton("Reiniciar", accion_reiniciar)
+
+    actualizar_lienzo(lienzo)
+
+    lienzo.esperar_cierre()
+
+def iniciar_juego():
+    """Inicia el tablero y las variables de estado desde cero"""
+    global PIEZAS, PIEZA_SELECCIONADA, TURNO
+    PIEZAS = []
+    PIEZA_SELECCIONADA = None
+    TURNO = COLOR_PIEZA_BLANCA
     
     # Crear torres negras iniciales
     torre_negra1 = Torre(COLOR_PIEZA_NEGRA, 0, 0)
@@ -63,16 +81,10 @@ def main():
     PIEZAS.append(caballo_blanca1)
     PIEZAS.append(caballo_blanca2)
     PIEZAS.append(reina_blanca)
-    PIEZAS.append(rey_blanca)    
-
+    PIEZAS.append(rey_blanca)
     
-    lienzo.vincular_click(manejar_click)
-
-    actualizar_lienzo(lienzo)
-
-    lienzo.esperar_cierre()
-
-
+    if LIENZO_GLOBAL:
+        actualizar_lienzo(LIENZO_GLOBAL)
 
 
 def crear_tablero(lienzo):
